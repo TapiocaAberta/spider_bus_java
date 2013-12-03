@@ -22,6 +22,20 @@ public class Raspar implements Job {
 		linhaModel = new LinhaModel();
 		linhaModel.removerTodos(); // Limpar Collection para entrada de novos dados
 
+		System.out.println("###################### ALTERNATIVO ######################");
+
+		Integer linhaAlternativo;
+		Integer numeroMaximoAlternativo = 40;
+
+		for ( linhaAlternativo = 10; linhaAlternativo <= numeroMaximoAlternativo; linhaAlternativo++ ) {
+			parseDados = new HtmlParseLinhaTransporte(linhaAlternativo.toString());
+
+			List<HoraItinerarioOnibus> linhas = parseDados.montaConteudoHorarioItinerario();
+			linhaModel.salvarLinha(linhas, TipoConducao.ALTERNATIVO);
+		}
+
+		System.out.println("###################### ONIBUS ######################");
+
 		Integer linhaOnibus;
 		Integer numeroMaximoOnibus = 360;
 

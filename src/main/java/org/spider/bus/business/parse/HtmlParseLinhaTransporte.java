@@ -1,7 +1,5 @@
 package org.spider.bus.business.parse;
 
-import static org.spider.bus.util.NumeroUtil.ehNumerico;
-
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
@@ -12,20 +10,21 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.spider.bus.constantes.IdElementos;
 import org.spider.bus.pojo.HoraItinerarioOnibus;
 
 public class HtmlParseLinhaTransporte {
 
 	private Document pagina;
+	private boolean ehAlternativo = false;
 
-	public HtmlParseLinhaTransporte(String htmlOuNumeroOnibus) {
+	public HtmlParseLinhaTransporte(String numeroLinha) {
 
-		if ( ehNumerico(htmlOuNumeroOnibus) ) {
-			geraDocumentPorURL(htmlOuNumeroOnibus);
-		} else {
-			pagina = Jsoup.parse(htmlOuNumeroOnibus);
+		if ( numeroLinha.length() == 2 ) {
+			ehAlternativo = true;
 		}
 
+		geraDocumentPorURL(numeroLinha);
 	}
 
 	public List<HoraItinerarioOnibus> montaConteudoHorarioItinerario() throws Exception {
@@ -41,6 +40,17 @@ public class HtmlParseLinhaTransporte {
 			e.printStackTrace();
 			throw new Exception("erro ao buscar linha: " + e.getMessage());
 		}
+	}
+
+	public static void main(String[] args) throws Exception {
+
+		HtmlParseLinhaTransporte parseDados = null;
+
+		for ( int i = 10; i <= 40; i++ ) {
+			parseDados = new HtmlParseLinhaTransporte(i + "");
+			parseDados.buscaURL();
+		}
+
 	}
 
 	protected HashSet<String> buscaURL() throws Exception {
@@ -72,7 +82,14 @@ public class HtmlParseLinhaTransporte {
 	private Elements buscaUrlsParaTratar() throws Exception {
 		Elements liksHora = null;
 		try {
-			liksHora = pagina.getElementById("divListaOnibus").select("a[href]");
+			if ( ehAlternativo ) {
+				System.out.println("Aqui");
+				liksHora = pagina.getElementById(IdElementos.ID_DIV_ALTERNATIVO).select("a[href]");
+			} else {
+				System.out.println("Aqui BUs");
+				liksHora = pagina.getElementById(IdElementos.ID_DIV_ONIBUS).select("a[href]");
+			}
+
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}

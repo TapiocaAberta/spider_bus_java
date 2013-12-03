@@ -12,7 +12,7 @@ public class RasparAgendador {
 
 	static final String SEGUNDO = "00";
 	static final String MINUTO = "00";
-	static final String HORA = "20";
+	static final String HORA = "21";
 	static final String DIA_MES = "02";
 	static final String MES = "*"; // * = TODOS MESES
 	static final String DIA_SEMANA = "?"; // ? = NÃO ESPECÍFICO
