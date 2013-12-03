@@ -1,5 +1,6 @@
 package org.spider.bus.recurso;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -11,6 +12,7 @@ import org.spider.bus.business.recurso.SpiderBusiness;
 @Path("buscar")
 public class SpiderRecurso {
 
+	@Inject
 	private SpiderBusiness spiderBusiness;
 
 	@GET
@@ -18,7 +20,6 @@ public class SpiderRecurso {
 	@Produces("application/json; charset=UTF-8")
 	// TODOS independente do tipo
 	public Response buscarTodos() {
-		spiderBusiness = new SpiderBusiness();
 		return spiderBusiness.buscarTodos();
 	}
 
@@ -27,7 +28,6 @@ public class SpiderRecurso {
 	@Produces("application/json; charset=UTF-8")
 	// TODOS do tipo onibus
 	public Response buscarTodosOnibus() {
-		spiderBusiness = new SpiderBusiness();
 		return spiderBusiness.buscarTodosOnibus();
 	}
 
@@ -54,7 +54,6 @@ public class SpiderRecurso {
 	@Produces("application/json; charset=UTF-8")
 	// por rua ou por numero por onuibus
 	public Response buscarOnibusPorNumero(@PathParam("valor") String valor) {
-		spiderBusiness = new SpiderBusiness();
 		return spiderBusiness.buscarOnibus(valor);
 	}
 
@@ -63,7 +62,6 @@ public class SpiderRecurso {
 	@Produces("application/json; charset=UTF-8")
 	// por rua ou por numero independente do tipo
 	public Response buscarAlternativoPorNumero(@PathParam("valor") String valor) {
-		spiderBusiness = new SpiderBusiness();
 		return spiderBusiness.buscarAlternativo(valor);
 	}
 
