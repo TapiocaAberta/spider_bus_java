@@ -27,11 +27,13 @@ public class LinhaModel {
 	@Inject
 	protected Logger log;
 
+	private MongoClient mongo;
+
 	public LinhaModel() {
 		try {
 
-			// MongoClient mongo = new MongoClient(MongoDB.URL_LOCAL, MongoDB.PORTA);
-			MongoClient mongo = new MongoClient(MongoDB.URL_PROD, MongoDB.PORTA); // APENAS PARA PRODUCAO
+			// mongo = new MongoClient(MongoDB.URL_LOCAL, MongoDB.PORTA);
+			mongo = new MongoClient(MongoDB.URL_PROD, MongoDB.PORTA); // APENAS PARA PRODUCAO
 
 			DB dataBase = mongo.getDB(MongoDB.DB);
 
@@ -71,7 +73,13 @@ public class LinhaModel {
 			linha.put("horarios", horarios);
 
 			collection.insert(linha);
+
 		}
+
+	}
+
+	public void fecharConexao() {
+		mongo.close();
 
 	}
 

@@ -15,13 +15,13 @@ import org.spider.bus.pojo.HoraItinerarioOnibus;
 
 @Singleton
 @Startup
-public class Raspar{
+public class Raspar {
 
 	@Inject
 	private LinhaModel linhaModel;
 
 	private HtmlParseLinhaTransporte parseDados;
-	
+
 	@Inject
 	protected Logger log;
 
@@ -54,17 +54,17 @@ public class Raspar{
 			List<HoraItinerarioOnibus> linhas = parseDados.montaConteudoHorarioItinerario();
 			linhaModel.salvarLinha(linhas, TipoConducao.ONIBUS);
 		}
-
+		linhaModel.fecharConexao();
 		log.info("###################### FIM SONDA ######################");
 	}
 
-	@Schedule(dayOfWeek="Sun", hour="1")
+	@Schedule(dayOfWeek = "Sun, Thurs", hour = "18", minute = "10")
 	public void execute() {
 		log.info("** Executando o JOB para coleta dos dados ***");
 		try {
 			rasparDados();
 		} catch ( Exception e ) {
-			log.error("Erro grave durante coleta dos dados: "+e.getMessage());
+			log.error("Erro grave durante coleta dos dados: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
