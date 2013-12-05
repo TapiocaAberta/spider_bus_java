@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
 import org.spider.bus.business.parse.HtmlParseLinhaTransporte;
 import org.spider.bus.constantes.TipoConducao;
 import org.spider.bus.model.LinhaModel;
@@ -18,14 +19,17 @@ public class Raspar implements Job {
 	private LinhaModel linhaModel;
 
 	private HtmlParseLinhaTransporte parseDados;
+	
+	@Inject
+	protected Logger log;
 
 	public void rasparDados() throws Exception { // RANGE 101 ao 360
 
-		System.out.println("###################### ATIVANDO SONDA ######################");
+		log.info("###################### ATIVANDO SONDA ######################");
 
 		linhaModel.removerTodos(); // Limpar Collection para entrada de novos dados
 
-		System.out.println("###################### ALTERNATIVO ######################");
+		log.info("###################### ALTERNATIVO ######################");
 
 		Integer linhaAlternativo;
 		Integer numeroMaximoAlternativo = 40;
@@ -37,7 +41,7 @@ public class Raspar implements Job {
 			linhaModel.salvarLinha(linhas, TipoConducao.ALTERNATIVO);
 		}
 
-		System.out.println("###################### ONIBUS ######################");
+		log.info("###################### ONIBUS ######################");
 
 		Integer linhaOnibus;
 		Integer numeroMaximoOnibus = 360;
@@ -49,7 +53,7 @@ public class Raspar implements Job {
 			linhaModel.salvarLinha(linhas, TipoConducao.ONIBUS);
 		}
 
-		System.out.println("###################### FIM SONDA ######################");
+		log.info("###################### FIM SONDA ######################");
 	}
 
 	@Override
@@ -58,7 +62,7 @@ public class Raspar implements Job {
 		try {
 			rasparDados();
 		} catch ( Exception e ) {
-			System.out.println(e.getMessage());
+			log.error(e.getMessage());
 		}
 	}
 }

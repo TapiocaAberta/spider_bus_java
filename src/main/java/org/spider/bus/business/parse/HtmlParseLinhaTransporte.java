@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.inject.Inject;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
 import org.spider.bus.constantes.IdElementos;
 import org.spider.bus.pojo.HoraItinerarioOnibus;
 
@@ -17,6 +20,9 @@ public class HtmlParseLinhaTransporte {
 
 	private Document pagina;
 	private boolean ehAlternativo = false;
+	
+	@Inject
+	protected Logger log;
 
 	public HtmlParseLinhaTransporte(String numeroLinha) {
 
@@ -83,10 +89,10 @@ public class HtmlParseLinhaTransporte {
 		Elements liksHora = null;
 		try {
 			if ( ehAlternativo ) {
-				System.out.println("Aqui");
+				log.info("Carregando Alternativo");
 				liksHora = pagina.getElementById(IdElementos.ID_DIV_ALTERNATIVO).select("a[href]");
 			} else {
-				System.out.println("Aqui BUs");
+				log.info("Carregando Ônibus");
 				liksHora = pagina.getElementById(IdElementos.ID_DIV_ONIBUS).select("a[href]");
 			}
 
@@ -98,7 +104,7 @@ public class HtmlParseLinhaTransporte {
 	}
 
 	protected void geraDocumentPorURL(String numeroLinha) {
-		System.out.println("linha: " + numeroLinha);
+		log.info("Carregando página para linha: "+ numeroLinha);
 		String urlBuscaPorLinha = "http://www.sjc.sp.gov.br/secretarias/transportes/horario-e-itinerario.aspx?acao=p&opcao=0&txt=" + numeroLinha;
 
 		try {

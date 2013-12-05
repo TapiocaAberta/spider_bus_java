@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.inject.Inject;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
 import org.spider.bus.constantes.MongoDB;
 import org.spider.bus.constantes.TipoConducao;
 import org.spider.bus.pojo.HoraItinerarioOnibus;
@@ -21,11 +24,14 @@ import com.mongodb.MongoClient;
 public class LinhaModel {
 	private DBCollection collection;
 
+	@Inject
+	protected Logger log;
+	
 	public LinhaModel() {
 		try {
 
-			// MongoClient mongo = new MongoClient(MongoDB.URL_LOCAL, MongoDB.PORTA);
-			MongoClient mongo = new MongoClient(MongoDB.URL_PROD, MongoDB.PORTA); // APENAS PARA PRODUCAO
+			 MongoClient mongo = new MongoClient(MongoDB.URL_LOCAL, MongoDB.PORTA);
+			//MongoClient mongo = new MongoClient(MongoDB.URL_PROD, MongoDB.PORTA); // APENAS PARA PRODUCAO
 
 			DB dataBase = mongo.getDB(MongoDB.DB);
 
@@ -44,7 +50,7 @@ public class LinhaModel {
 		while ( cursor.hasNext() ) {
 			collection.remove(cursor.next());
 			loading = loading + " . ";
-			System.out.println(loading);
+			log.info(loading);
 		}
 	}
 

@@ -24,8 +24,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.inject.Inject;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
 import org.spider.bus.constantes.DiasSemana;
 import org.spider.bus.pojo.HoraItinerarioOnibus;
 import org.spider.bus.pojo.Horario;
@@ -34,6 +37,9 @@ public class HtmlParseHorarioItinerario {
 
 	private Document pagina;
 	private HashSet<String> urls;
+	
+	@Inject
+	protected Logger log;
 
 	public HtmlParseHorarioItinerario() {
 	}
@@ -62,7 +68,7 @@ public class HtmlParseHorarioItinerario {
 				horaEItinerario.add(horaEItinerarioPojo);
 
 			} catch ( IOException e ) {
-				System.out.println("ERRO AQUI: " + url);
+				log.warn("Erro quando carregando URL: "+url);
 				e.printStackTrace();
 			}
 		}
