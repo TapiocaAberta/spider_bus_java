@@ -26,12 +26,12 @@ public class LinhaModel {
 
 	@Inject
 	protected Logger log;
-	
+
 	public LinhaModel() {
 		try {
 
-			 MongoClient mongo = new MongoClient(MongoDB.URL_LOCAL, MongoDB.PORTA);
-			//MongoClient mongo = new MongoClient(MongoDB.URL_PROD, MongoDB.PORTA); // APENAS PARA PRODUCAO
+			// MongoClient mongo = new MongoClient(MongoDB.URL_LOCAL, MongoDB.PORTA);
+			MongoClient mongo = new MongoClient(MongoDB.URL_PROD, MongoDB.PORTA); // APENAS PARA PRODUCAO
 
 			DB dataBase = mongo.getDB(MongoDB.DB);
 
