@@ -2,6 +2,8 @@ package org.spider.bus.sondas;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -12,14 +14,15 @@ import org.spider.bus.pojo.HoraItinerarioOnibus;
 
 public class Raspar implements Job {
 
+	@Inject
 	private LinhaModel linhaModel;
+
 	private HtmlParseLinhaTransporte parseDados;
 
 	public void rasparDados() throws Exception { // RANGE 101 ao 360
 
 		System.out.println("###################### ATIVANDO SONDA ######################");
 
-		linhaModel = new LinhaModel();
 		linhaModel.removerTodos(); // Limpar Collection para entrada de novos dados
 
 		System.out.println("###################### ALTERNATIVO ######################");

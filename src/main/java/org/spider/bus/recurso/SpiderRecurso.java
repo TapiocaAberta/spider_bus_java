@@ -36,7 +36,6 @@ public class SpiderRecurso {
 	@Produces("application/json; charset=UTF-8")
 	// TODOS do tipo alternativo
 	public Response buscarTodosAltenativo() {
-		spiderBusiness = new SpiderBusiness();
 		return spiderBusiness.buscarTodosAlternativos();
 	}
 
@@ -45,7 +44,6 @@ public class SpiderRecurso {
 	@Produces("application/json; charset=UTF-8")
 	// por rua ou por numero independente do tipo
 	public Response buscarPorNumero(@PathParam("valor") String valor) {
-		spiderBusiness = new SpiderBusiness();
 		return spiderBusiness.buscar(valor);
 	}
 

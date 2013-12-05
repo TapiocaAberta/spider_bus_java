@@ -39,8 +39,10 @@
 		</div>
 		<div class="four columns" id="sidebar">
 			<dl>
-				<dt style="margin-top: 0"><h4>Movies</h4></dt>
-				<dd><a href="/" data-requestmethod="get">overview</a><small>GET /movies</small></dd>
+				<dt style="margin-top: 0"><h4>Horario Itinerario</h4></dt>
+				<dd><a href="/buscar" data-requestmethod="get">buscar</a><small>GET /buscar</small></dd>
+				<dd><a href="/buscar/200" data-requestmethod="get">buscar por numero de linha</a><small>GET /buscar/{numero}</small></dd>
+				<dd><a href="/buscar/fatec" data-requestmethod="get">buscar por palavra chave</a><small>GET /buscar/{nome rua}</small></dd>
 			</dl>
 		</div>
 		<div class="eleven columns">
@@ -70,7 +72,7 @@
 	<script>
 	
 		// Config
-		var apiBaseUrl = 'http://spiderbus-pedrohos.rhcloud.com/api/buscar';
+		var apiBaseUrl = 'http://spiderbus-pedrohos.rhcloud.com/api';
 		var apiDataType = 'json';
 		var apiExtraHeaders = {'Content-Type' : 'application/json;charset=UTF-8'};
 		var apiUrlSuffix = '';
