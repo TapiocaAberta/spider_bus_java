@@ -1,5 +1,6 @@
 package org.spider.bus.model;
 
+import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +8,8 @@ import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -131,7 +134,7 @@ public class LinhaModel {
 		return linhaDados;
 	}
 
-	public List<HoraItinerarioOnibus> buscarAlternativoPorRua(String rua) throws Exception {
+	public List<HoraItinerarioOnibus> buscarAlternativoPorRua(String rua) {
 
 		List<HoraItinerarioOnibus> linhaDados = new ArrayList<HoraItinerarioOnibus>();
 
@@ -143,14 +146,30 @@ public class LinhaModel {
 
 		ObjectMapper mapper = new ObjectMapper();
 		while ( cursor.hasNext() ) {
-			HoraItinerarioOnibus horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
+			HoraItinerarioOnibus horariosItinerario = null;
+			try {
+				horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
+			} catch ( JsonParseException e ) {
+
+				e.printStackTrace();
+			} catch ( JsonMappingException e ) {
+
+				e.printStackTrace();
+			} catch ( IOException e ) {
+
+				e.printStackTrace();
+			} finally {
+				cursor.close();
+				mongo.close();
+			}
+
 			linhaDados.add(horariosItinerario);
 		}
 
 		return linhaDados;
 	}
 
-	public List<HoraItinerarioOnibus> buscarOnibusPorRua(String rua) throws Exception {
+	public List<HoraItinerarioOnibus> buscarOnibusPorRua(String rua) {
 
 		List<HoraItinerarioOnibus> linhaDados = new ArrayList<HoraItinerarioOnibus>();
 
@@ -162,14 +181,30 @@ public class LinhaModel {
 
 		ObjectMapper mapper = new ObjectMapper();
 		while ( cursor.hasNext() ) {
-			HoraItinerarioOnibus horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
+			HoraItinerarioOnibus horariosItinerario = null;
+			try {
+				horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
+			} catch ( JsonParseException e ) {
+
+				e.printStackTrace();
+			} catch ( JsonMappingException e ) {
+
+				e.printStackTrace();
+			} catch ( IOException e ) {
+
+				e.printStackTrace();
+			} finally {
+				cursor.close();
+				mongo.close();
+			}
+
 			linhaDados.add(horariosItinerario);
 		}
 
 		return linhaDados;
 	}
 
-	public List<HoraItinerarioOnibus> buscarPorNumeroLinha(String numero) throws Exception {
+	public List<HoraItinerarioOnibus> buscarPorNumeroLinha(String numero) {
 
 		List<HoraItinerarioOnibus> linhaDados = new ArrayList<HoraItinerarioOnibus>();
 
@@ -180,14 +215,30 @@ public class LinhaModel {
 
 		ObjectMapper mapper = new ObjectMapper();
 		while ( cursor.hasNext() ) {
-			HoraItinerarioOnibus horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
+			HoraItinerarioOnibus horariosItinerario = null;
+			try {
+				horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
+			} catch ( JsonParseException e ) {
+
+				e.printStackTrace();
+			} catch ( JsonMappingException e ) {
+
+				e.printStackTrace();
+			} catch ( IOException e ) {
+
+				e.printStackTrace();
+			} finally {
+				cursor.close();
+				mongo.close();
+			}
+
 			linhaDados.add(horariosItinerario);
 		}
 
 		return linhaDados;
 	}
 
-	public List<HoraItinerarioOnibus> buscarAltenativoPorNumeroLinha(String numero) throws Exception {
+	public List<HoraItinerarioOnibus> buscarAltenativoPorNumeroLinha(String numero) {
 
 		List<HoraItinerarioOnibus> linhaDados = new ArrayList<HoraItinerarioOnibus>();
 
@@ -199,14 +250,30 @@ public class LinhaModel {
 
 		ObjectMapper mapper = new ObjectMapper();
 		while ( cursor.hasNext() ) {
-			HoraItinerarioOnibus horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
+			HoraItinerarioOnibus horariosItinerario = null;
+			try {
+				horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
+			} catch ( JsonParseException e ) {
+
+				e.printStackTrace();
+			} catch ( JsonMappingException e ) {
+
+				e.printStackTrace();
+			} catch ( IOException e ) {
+
+				e.printStackTrace();
+			} finally {
+				cursor.close();
+				mongo.close();
+			}
+
 			linhaDados.add(horariosItinerario);
 		}
 
 		return linhaDados;
 	}
 
-	public List<HoraItinerarioOnibus> buscarOnibusPorNumeroLinha(String numero) throws Exception {
+	public List<HoraItinerarioOnibus> buscarOnibusPorNumeroLinha(String numero) {
 
 		List<HoraItinerarioOnibus> linhaDados = new ArrayList<HoraItinerarioOnibus>();
 
@@ -218,28 +285,54 @@ public class LinhaModel {
 
 		ObjectMapper mapper = new ObjectMapper();
 		while ( cursor.hasNext() ) {
-			HoraItinerarioOnibus horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
+			HoraItinerarioOnibus horariosItinerario = null;
+			try {
+				horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
+			} catch ( JsonParseException e ) {
+				e.printStackTrace();
+			} catch ( JsonMappingException e ) {
+				e.printStackTrace();
+			} catch ( IOException e ) {
+				e.printStackTrace();
+			} finally {
+				cursor.close();
+				mongo.close();
+			}
+
 			linhaDados.add(horariosItinerario);
 		}
 
 		return linhaDados;
 	}
 
-	public List<HoraItinerarioOnibus> buscarTodos() throws Exception {
+	public List<HoraItinerarioOnibus> buscarTodos() {
 
 		List<HoraItinerarioOnibus> linhaDados = new ArrayList<HoraItinerarioOnibus>();
 		DBCursor cursor = collection.find();
 
 		ObjectMapper mapper = new ObjectMapper();
 		while ( cursor.hasNext() ) {
-			HoraItinerarioOnibus horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
+			HoraItinerarioOnibus horariosItinerario = null;
+			try {
+				horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
+			} catch ( JsonParseException e ) {
+				e.printStackTrace();
+			} catch ( JsonMappingException e ) {
+				e.printStackTrace();
+			} catch ( IOException e ) {
+				e.printStackTrace();
+			} finally {
+				cursor.close();
+				mongo.close();
+			}
+
 			linhaDados.add(horariosItinerario);
 		}
 
 		return linhaDados;
 	}
 
-	public List<HoraItinerarioOnibus> buscarTodosOnibus() throws Exception {
+	public List<HoraItinerarioOnibus> buscarTodosOnibus() {
 
 		List<HoraItinerarioOnibus> linhaDados = new ArrayList<HoraItinerarioOnibus>();
 
@@ -250,14 +343,29 @@ public class LinhaModel {
 
 		ObjectMapper mapper = new ObjectMapper();
 		while ( cursor.hasNext() ) {
-			HoraItinerarioOnibus horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
+			HoraItinerarioOnibus horariosItinerario = null;
+
+			try {
+				horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
+			} catch ( JsonParseException e ) {
+				e.printStackTrace();
+			} catch ( JsonMappingException e ) {
+				e.printStackTrace();
+			} catch ( IOException e ) {
+				e.printStackTrace();
+			} finally {
+				cursor.close();
+				mongo.close();
+
+			}
+
 			linhaDados.add(horariosItinerario);
 		}
 
 		return linhaDados;
 	}
 
-	public List<HoraItinerarioOnibus> buscarTodosAltenativos() throws Exception {
+	public List<HoraItinerarioOnibus> buscarTodosAltenativos() throws JsonParseException, JsonMappingException {
 
 		List<HoraItinerarioOnibus> linhaDados = new ArrayList<HoraItinerarioOnibus>();
 
@@ -268,7 +376,17 @@ public class LinhaModel {
 
 		ObjectMapper mapper = new ObjectMapper();
 		while ( cursor.hasNext() ) {
-			HoraItinerarioOnibus horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
+			HoraItinerarioOnibus horariosItinerario = null;
+			try {
+				horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
+			} catch ( IOException e ) {
+				e.printStackTrace();
+
+			} finally {
+				cursor.close();
+				mongo.close();
+			}
+
 			linhaDados.add(horariosItinerario);
 		}
 
