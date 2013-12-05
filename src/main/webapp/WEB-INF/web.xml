@@ -13,11 +13,6 @@
             org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap
         </listener-class>
   </listener>
-  <listener>
-    <listener-class>
-		    org.spider.bus.sondas.RasparListener
-		</listener-class>
-  </listener>
   <servlet>
     <servlet-name>resteasy-servlet</servlet-name>
     <servlet-class>

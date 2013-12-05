@@ -2,18 +2,20 @@ package org.spider.bus.sondas;
 
 import java.util.List;
 
+import javax.ejb.Schedule;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import javax.inject.Inject;
 
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.spider.bus.business.parse.HtmlParseLinhaTransporte;
 import org.spider.bus.constantes.TipoConducao;
 import org.spider.bus.model.LinhaModel;
 import org.spider.bus.pojo.HoraItinerarioOnibus;
 
-public class Raspar implements Job {
+@Singleton
+@Startup
+public class Raspar{
 
 	@Inject
 	private LinhaModel linhaModel;
@@ -56,13 +58,14 @@ public class Raspar implements Job {
 		log.info("###################### FIM SONDA ######################");
 	}
 
-	@Override
-	public void execute(JobExecutionContext arg0) throws JobExecutionException {
-
+	@Schedule(dayOfWeek="Sun", hour="1")
+	public void execute() {
+		log.info("** Executando o JOB para coleta dos dados ***");
 		try {
 			rasparDados();
 		} catch ( Exception e ) {
-			log.error(e.getMessage());
+			log.error("Erro grave durante coleta dos dados: "+e.getMessage());
+			e.printStackTrace();
 		}
 	}
 }
