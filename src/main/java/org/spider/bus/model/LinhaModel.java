@@ -1,6 +1,5 @@
 package org.spider.bus.model;
 
-import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +7,6 @@ import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -30,7 +27,7 @@ public class LinhaModel {
 	@Inject
 	protected Logger log;
 
-	private MongoClient mongo;
+	protected MongoClient mongo;
 
 	public LinhaModel() {
 		try {
@@ -83,7 +80,6 @@ public class LinhaModel {
 
 	public void fecharConexao() {
 		mongo.close();
-
 	}
 
 	protected BasicDBObject montaListaComHorarios(HoraItinerarioOnibus horaItinerarioOnibus) {
@@ -116,192 +112,61 @@ public class LinhaModel {
 		return horarios;
 	}
 
-	public List<HoraItinerarioOnibus> buscarPorRua(String rua) throws Exception {
+	public List<HoraItinerarioOnibus> buscarPorRua(String rua, String tipoConducao) {
 
 		List<HoraItinerarioOnibus> linhaDados = new ArrayList<HoraItinerarioOnibus>();
 
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("itinerario", Pattern.compile(rua.toUpperCase()));
 
-		DBCursor cursor = collection.find(searchQuery);
-
-		ObjectMapper mapper = new ObjectMapper();
-		while ( cursor.hasNext() ) {
-			HoraItinerarioOnibus horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
-			linhaDados.add(horariosItinerario);
+		if ( !tipoConducao.equals(TipoConducao.TODOS) ) {
+			searchQuery.put("tipo", tipoConducao);
 		}
 
-		return linhaDados;
-	}
-
-	public List<HoraItinerarioOnibus> buscarAlternativoPorRua(String rua) {
-
-		List<HoraItinerarioOnibus> linhaDados = new ArrayList<HoraItinerarioOnibus>();
-
-		BasicDBObject searchQuery = new BasicDBObject();
-		searchQuery.put("itinerario", Pattern.compile(rua.toUpperCase()));
-		searchQuery.put("tipo", TipoConducao.ALTERNATIVO);
-
 		DBCursor cursor = collection.find(searchQuery);
 
-		ObjectMapper mapper = new ObjectMapper();
-		while ( cursor.hasNext() ) {
-			HoraItinerarioOnibus horariosItinerario = null;
-			try {
-				horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
-			} catch ( JsonParseException e ) {
-
-				e.printStackTrace();
-			} catch ( JsonMappingException e ) {
-
-				e.printStackTrace();
-			} catch ( IOException e ) {
-
-				e.printStackTrace();
-			} finally {
-				cursor.close();
-				mongo.close();
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			while ( cursor.hasNext() ) {
+				HoraItinerarioOnibus horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
+				linhaDados.add(horariosItinerario);
 			}
+		} catch ( Exception e ) {
+			log.info("Problema ao executar busca por Palavra Chave: " + e.getCause());
 
-			linhaDados.add(horariosItinerario);
+		} finally {
+			cursor.close();
+			mongo.close();
 		}
 
 		return linhaDados;
 	}
 
-	public List<HoraItinerarioOnibus> buscarOnibusPorRua(String rua) {
-
+	public List<HoraItinerarioOnibus> buscarPorNumeroLinha(String numero, String tipoConducao) {
 		List<HoraItinerarioOnibus> linhaDados = new ArrayList<HoraItinerarioOnibus>();
-
 		BasicDBObject searchQuery = new BasicDBObject();
-		searchQuery.put("itinerario", Pattern.compile(rua.toUpperCase()));
-		searchQuery.put("tipo", TipoConducao.ONIBUS);
 
-		DBCursor cursor = collection.find(searchQuery);
-
-		ObjectMapper mapper = new ObjectMapper();
-		while ( cursor.hasNext() ) {
-			HoraItinerarioOnibus horariosItinerario = null;
-			try {
-				horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
-			} catch ( JsonParseException e ) {
-
-				e.printStackTrace();
-			} catch ( JsonMappingException e ) {
-
-				e.printStackTrace();
-			} catch ( IOException e ) {
-
-				e.printStackTrace();
-			} finally {
-				cursor.close();
-				mongo.close();
-			}
-
-			linhaDados.add(horariosItinerario);
-		}
-
-		return linhaDados;
-	}
-
-	public List<HoraItinerarioOnibus> buscarPorNumeroLinha(String numero) {
-
-		List<HoraItinerarioOnibus> linhaDados = new ArrayList<HoraItinerarioOnibus>();
-
-		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("numero", Pattern.compile(numero));
 
-		DBCursor cursor = collection.find(searchQuery);
-
-		ObjectMapper mapper = new ObjectMapper();
-		while ( cursor.hasNext() ) {
-			HoraItinerarioOnibus horariosItinerario = null;
-			try {
-				horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
-			} catch ( JsonParseException e ) {
-
-				e.printStackTrace();
-			} catch ( JsonMappingException e ) {
-
-				e.printStackTrace();
-			} catch ( IOException e ) {
-
-				e.printStackTrace();
-			} finally {
-				cursor.close();
-				mongo.close();
-			}
-
-			linhaDados.add(horariosItinerario);
+		if ( !tipoConducao.equals(TipoConducao.TODOS) ) {
+			searchQuery.put("tipo", tipoConducao);
 		}
-
-		return linhaDados;
-	}
-
-	public List<HoraItinerarioOnibus> buscarAltenativoPorNumeroLinha(String numero) {
-
-		List<HoraItinerarioOnibus> linhaDados = new ArrayList<HoraItinerarioOnibus>();
-
-		BasicDBObject searchQuery = new BasicDBObject();
-		searchQuery.put("numero", Pattern.compile(numero));
-		searchQuery.put("tipo", TipoConducao.ALTERNATIVO);
 
 		DBCursor cursor = collection.find(searchQuery);
 
-		ObjectMapper mapper = new ObjectMapper();
-		while ( cursor.hasNext() ) {
-			HoraItinerarioOnibus horariosItinerario = null;
-			try {
-				horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
-			} catch ( JsonParseException e ) {
-
-				e.printStackTrace();
-			} catch ( JsonMappingException e ) {
-
-				e.printStackTrace();
-			} catch ( IOException e ) {
-
-				e.printStackTrace();
-			} finally {
-				cursor.close();
-				mongo.close();
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			while ( cursor.hasNext() ) {
+				HoraItinerarioOnibus horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
+				linhaDados.add(horariosItinerario);
 			}
+		} catch ( Exception e ) {
+			log.info("Problema ao executar busca Todos por Numero de linha " + e.getCause());
 
-			linhaDados.add(horariosItinerario);
+		} finally {
+			cursor.close();
+			mongo.close();
 		}
-
-		return linhaDados;
-	}
-
-	public List<HoraItinerarioOnibus> buscarOnibusPorNumeroLinha(String numero) {
-
-		List<HoraItinerarioOnibus> linhaDados = new ArrayList<HoraItinerarioOnibus>();
-
-		BasicDBObject searchQuery = new BasicDBObject();
-		searchQuery.put("numero", Pattern.compile(numero));
-		searchQuery.put("tipo", TipoConducao.ONIBUS);
-
-		DBCursor cursor = collection.find(searchQuery);
-
-		ObjectMapper mapper = new ObjectMapper();
-		while ( cursor.hasNext() ) {
-			HoraItinerarioOnibus horariosItinerario = null;
-			try {
-				horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
-			} catch ( JsonParseException e ) {
-				e.printStackTrace();
-			} catch ( JsonMappingException e ) {
-				e.printStackTrace();
-			} catch ( IOException e ) {
-				e.printStackTrace();
-			} finally {
-				cursor.close();
-				mongo.close();
-			}
-
-			linhaDados.add(horariosItinerario);
-		}
-
 		return linhaDados;
 	}
 
@@ -310,84 +175,44 @@ public class LinhaModel {
 		List<HoraItinerarioOnibus> linhaDados = new ArrayList<HoraItinerarioOnibus>();
 		DBCursor cursor = collection.find();
 
-		ObjectMapper mapper = new ObjectMapper();
-		while ( cursor.hasNext() ) {
-			HoraItinerarioOnibus horariosItinerario = null;
-			try {
-				horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
-			} catch ( JsonParseException e ) {
-				e.printStackTrace();
-			} catch ( JsonMappingException e ) {
-				e.printStackTrace();
-			} catch ( IOException e ) {
-				e.printStackTrace();
-			} finally {
-				cursor.close();
-				mongo.close();
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			while ( cursor.hasNext() ) {
+				HoraItinerarioOnibus horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
+				linhaDados.add(horariosItinerario);
 			}
+		} catch ( Exception e ) {
+			log.info("Problema ao executar busca Todos por Numero de linha " + e.getCause());
 
-			linhaDados.add(horariosItinerario);
+		} finally {
+			cursor.close();
+			mongo.close();
 		}
 
 		return linhaDados;
 	}
 
-	public List<HoraItinerarioOnibus> buscarTodosOnibus() {
+	public List<HoraItinerarioOnibus> buscarTodosPorTipo(String tipoConducao) {
 
 		List<HoraItinerarioOnibus> linhaDados = new ArrayList<HoraItinerarioOnibus>();
 
 		BasicDBObject searchQuery = new BasicDBObject();
-		searchQuery.put("tipo", TipoConducao.ONIBUS);
+		searchQuery.put("tipo", tipoConducao);
 
 		DBCursor cursor = collection.find(searchQuery);
 
-		ObjectMapper mapper = new ObjectMapper();
-		while ( cursor.hasNext() ) {
-			HoraItinerarioOnibus horariosItinerario = null;
-
-			try {
-				horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
-			} catch ( JsonParseException e ) {
-				e.printStackTrace();
-			} catch ( JsonMappingException e ) {
-				e.printStackTrace();
-			} catch ( IOException e ) {
-				e.printStackTrace();
-			} finally {
-				cursor.close();
-				mongo.close();
-
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			while ( cursor.hasNext() ) {
+				HoraItinerarioOnibus horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
+				linhaDados.add(horariosItinerario);
 			}
+		} catch ( Exception e ) {
+			log.info("Problema ao executar busca Todos por Numero de linha " + e.getCause());
 
-			linhaDados.add(horariosItinerario);
-		}
-
-		return linhaDados;
-	}
-
-	public List<HoraItinerarioOnibus> buscarTodosAltenativos() throws JsonParseException, JsonMappingException {
-
-		List<HoraItinerarioOnibus> linhaDados = new ArrayList<HoraItinerarioOnibus>();
-
-		BasicDBObject searchQuery = new BasicDBObject();
-		searchQuery.put("tipo", TipoConducao.ALTERNATIVO);
-
-		DBCursor cursor = collection.find(searchQuery);
-
-		ObjectMapper mapper = new ObjectMapper();
-		while ( cursor.hasNext() ) {
-			HoraItinerarioOnibus horariosItinerario = null;
-			try {
-				horariosItinerario = mapper.readValue(cursor.next().toString(), HoraItinerarioOnibus.class);
-			} catch ( IOException e ) {
-				e.printStackTrace();
-
-			} finally {
-				cursor.close();
-				mongo.close();
-			}
-
-			linhaDados.add(horariosItinerario);
+		} finally {
+			cursor.close();
+			mongo.close();
 		}
 
 		return linhaDados;

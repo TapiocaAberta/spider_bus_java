@@ -2,15 +2,18 @@ package org.spider.bus.business.recurso;
 
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.spider.bus.constantes.TipoConducao;
 import org.spider.bus.model.LinhaModel;
 import org.spider.bus.pojo.HoraItinerarioOnibus;
 import org.spider.bus.util.NumeroUtil;
 
 public class SpiderBusiness {
 
+	@Inject
 	private LinhaModel linhaModel;
 
 	public Response buscar(String value) {
@@ -62,10 +65,9 @@ public class SpiderBusiness {
 	}
 
 	public Response buscarPorNumero(String numero) {
-		linhaModel = new LinhaModel();
 		List<HoraItinerarioOnibus> linhas;
 		try {
-			linhas = linhaModel.buscarPorNumeroLinha(numero);
+			linhas = linhaModel.buscarPorNumeroLinha(numero, TipoConducao.TODOS);
 			return Response.status(Status.OK).entity(linhas).build();
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -75,10 +77,9 @@ public class SpiderBusiness {
 	}
 
 	public Response buscarOnibusPorNumero(String numero) {
-		linhaModel = new LinhaModel();
 		List<HoraItinerarioOnibus> linhas;
 		try {
-			linhas = linhaModel.buscarOnibusPorNumeroLinha(numero);
+			linhas = linhaModel.buscarPorNumeroLinha(numero, TipoConducao.ONIBUS);
 			return Response.status(Status.OK).entity(linhas).build();
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -88,10 +89,9 @@ public class SpiderBusiness {
 	}
 
 	public Response buscarAlternativoPorNumero(String numero) {
-		linhaModel = new LinhaModel();
 		List<HoraItinerarioOnibus> linhas;
 		try {
-			linhas = linhaModel.buscarAltenativoPorNumeroLinha(numero);
+			linhas = linhaModel.buscarPorNumeroLinha(numero, TipoConducao.ALTERNATIVO);
 			return Response.status(Status.OK).entity(linhas).build();
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -101,10 +101,9 @@ public class SpiderBusiness {
 	}
 
 	public Response buscarPorRua(String rua) {
-		linhaModel = new LinhaModel();
 		List<HoraItinerarioOnibus> linhas;
 		try {
-			linhas = linhaModel.buscarPorRua(rua);
+			linhas = linhaModel.buscarPorRua(rua, TipoConducao.TODOS);
 			return Response.status(Status.OK).entity(linhas).build();
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -114,10 +113,9 @@ public class SpiderBusiness {
 	}
 
 	public Response buscarOnibusPorRua(String rua) {
-		linhaModel = new LinhaModel();
 		List<HoraItinerarioOnibus> linhas;
 		try {
-			linhas = linhaModel.buscarOnibusPorRua(rua);
+			linhas = linhaModel.buscarPorRua(rua, TipoConducao.ONIBUS);
 			return Response.status(Status.OK).entity(linhas).build();
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -127,10 +125,9 @@ public class SpiderBusiness {
 	}
 
 	public Response buscarAlternativoPorRua(String rua) {
-		linhaModel = new LinhaModel();
 		List<HoraItinerarioOnibus> linhas;
 		try {
-			linhas = linhaModel.buscarAlternativoPorRua(rua);
+			linhas = linhaModel.buscarPorRua(rua, TipoConducao.ALTERNATIVO);
 			return Response.status(Status.OK).entity(linhas).build();
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -140,7 +137,6 @@ public class SpiderBusiness {
 	}
 
 	public Response buscarTodos() {
-		linhaModel = new LinhaModel();
 		List<HoraItinerarioOnibus> linhas;
 		try {
 			linhas = linhaModel.buscarTodos();
@@ -153,10 +149,9 @@ public class SpiderBusiness {
 	}
 
 	public Response buscarTodosOnibus() {
-		linhaModel = new LinhaModel();
 		List<HoraItinerarioOnibus> linhas;
 		try {
-			linhas = linhaModel.buscarTodosOnibus();
+			linhas = linhaModel.buscarTodosPorTipo(TipoConducao.ONIBUS);
 			return Response.status(Status.OK).entity(linhas).build();
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -166,10 +161,9 @@ public class SpiderBusiness {
 	}
 
 	public Response buscarTodosAlternativos() {
-		linhaModel = new LinhaModel();
 		List<HoraItinerarioOnibus> linhas;
 		try {
-			linhas = linhaModel.buscarTodosAltenativos();
+			linhas = linhaModel.buscarTodosPorTipo(TipoConducao.ALTERNATIVO);
 			return Response.status(Status.OK).entity(linhas).build();
 		} catch ( Exception e ) {
 			e.printStackTrace();
