@@ -1,0 +1,7 @@
+eclipse.preferences.version=1
+org.jboss.tools.openshift.ApplicationId=52a0ff37e0b8cdfa8e00013e
+org.jboss.tools.openshift.ApplicationName=spiderbus
+org.jboss.tools.openshift.Connection=https\://pedrosjc%40outlook.com@
+org.jboss.tools.openshift.DeployFolder=deployments
+org.jboss.tools.openshift.Domain=pedrohos
+org.jboss.tools.openshift.RemoteName=openshift
