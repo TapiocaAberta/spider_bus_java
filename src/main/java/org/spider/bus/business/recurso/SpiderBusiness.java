@@ -7,14 +7,14 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.spider.bus.constantes.TipoConducao;
-import org.spider.bus.dao.LinhaDao;
+import org.spider.bus.dao.LinhaDaoOld;
 import org.spider.bus.pojo.HoraItinerarioOnibus;
 import org.spider.bus.util.NumeroUtil;
 
 public class SpiderBusiness {
 
 	@Inject
-	private LinhaDao linhaModel;
+	private LinhaDaoOld linhaModel;
 
 	public Response buscar(String value) {
 		try {

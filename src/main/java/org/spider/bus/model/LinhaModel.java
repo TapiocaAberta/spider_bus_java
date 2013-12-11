@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Entity(name = "linha")
+@Entity
 @XmlRootElement
 public class LinhaModel {
 	@Id

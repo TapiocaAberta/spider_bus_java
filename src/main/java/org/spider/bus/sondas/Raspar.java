@@ -7,14 +7,14 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.spider.bus.business.parse.HtmlParseLinhaTransporte;
-import org.spider.bus.dao.LinhaDao;
+import org.spider.bus.dao.LinhaDaoOld;
 
 @Singleton
 @Startup
 public class Raspar {
 
 	@Inject
-	private LinhaDao linhaModel;
+	private LinhaDaoOld linhaModel;
 
 	private HtmlParseLinhaTransporte parseDados;
 

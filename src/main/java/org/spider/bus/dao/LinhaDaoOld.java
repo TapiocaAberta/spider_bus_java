@@ -21,7 +21,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 
-public class LinhaDao {
+public class LinhaDaoOld {
 	private DBCollection collection;
 
 	@Inject
@@ -29,7 +29,7 @@ public class LinhaDao {
 
 	protected MongoClient mongo;
 
-	public LinhaDao() {
+	public LinhaDaoOld() {
 		try {
 
 			mongo = new MongoClient(MongoDB.URL_LOCAL, MongoDB.PORTA);
