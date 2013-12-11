@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @XmlRootElement
-public class LinhaModel {
+public class Linha {
 	@Id
 	@GeneratedValue
 	private String id;
