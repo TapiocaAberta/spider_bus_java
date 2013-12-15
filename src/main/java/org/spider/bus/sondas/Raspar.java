@@ -53,7 +53,7 @@ public class Raspar {
 		log.info("###################### FIM SONDA ######################");
 	}
 
-	@Schedule(dayOfWeek = "Sun", hour = "16", minute = "24")
+	@Schedule(dayOfWeek = "Sun", hour = "20", minute = "30")
 	public void execute() {
 		log.info("** Executando o JOB para coleta dos dados ***");
 		try {

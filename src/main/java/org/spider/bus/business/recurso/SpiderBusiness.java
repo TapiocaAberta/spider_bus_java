@@ -7,14 +7,14 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.spider.bus.constantes.TipoConducao;
-import org.spider.bus.dao.LinhaDaoOld;
-import org.spider.bus.pojo.HoraItinerarioOnibus;
+import org.spider.bus.dao.LinhaDao;
+import org.spider.bus.model.onibus.Linha;
 import org.spider.bus.util.NumeroUtil;
 
 public class SpiderBusiness {
 
 	@Inject
-	private LinhaDaoOld linhaModel;
+	private LinhaDao dao;
 
 	public Response buscar(String value) {
 		try {
@@ -65,9 +65,9 @@ public class SpiderBusiness {
 	}
 
 	public Response buscarPorNumero(String numero) {
-		List<HoraItinerarioOnibus> linhas;
+		List<Linha> linhas;
 		try {
-			linhas = linhaModel.buscarPorNumeroLinha(numero, TipoConducao.TODOS);
+			linhas = dao.buscarPorNumeroLinha(numero, TipoConducao.TODOS);
 			return Response.status(Status.OK).entity(linhas).build();
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -77,9 +77,9 @@ public class SpiderBusiness {
 	}
 
 	public Response buscarOnibusPorNumero(String numero) {
-		List<HoraItinerarioOnibus> linhas;
+		List<Linha> linhas;
 		try {
-			linhas = linhaModel.buscarPorNumeroLinha(numero, TipoConducao.ONIBUS);
+			linhas = dao.buscarPorNumeroLinha(numero, TipoConducao.ONIBUS);
 			return Response.status(Status.OK).entity(linhas).build();
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -89,9 +89,9 @@ public class SpiderBusiness {
 	}
 
 	public Response buscarAlternativoPorNumero(String numero) {
-		List<HoraItinerarioOnibus> linhas;
+		List<Linha> linhas;
 		try {
-			linhas = linhaModel.buscarPorNumeroLinha(numero, TipoConducao.ALTERNATIVO);
+			linhas = dao.buscarPorNumeroLinha(numero, TipoConducao.ALTERNATIVO);
 			return Response.status(Status.OK).entity(linhas).build();
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -101,9 +101,9 @@ public class SpiderBusiness {
 	}
 
 	public Response buscarPorRua(String rua) {
-		List<HoraItinerarioOnibus> linhas;
+		List<Linha> linhas;
 		try {
-			linhas = linhaModel.buscarPorRua(rua, TipoConducao.TODOS);
+			linhas = dao.buscarPorRua(rua, TipoConducao.TODOS);
 			return Response.status(Status.OK).entity(linhas).build();
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -113,9 +113,9 @@ public class SpiderBusiness {
 	}
 
 	public Response buscarOnibusPorRua(String rua) {
-		List<HoraItinerarioOnibus> linhas;
+		List<Linha> linhas;
 		try {
-			linhas = linhaModel.buscarPorRua(rua, TipoConducao.ONIBUS);
+			linhas = dao.buscarPorRua(rua, TipoConducao.ONIBUS);
 			return Response.status(Status.OK).entity(linhas).build();
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -125,9 +125,9 @@ public class SpiderBusiness {
 	}
 
 	public Response buscarAlternativoPorRua(String rua) {
-		List<HoraItinerarioOnibus> linhas;
+		List<Linha> linhas;
 		try {
-			linhas = linhaModel.buscarPorRua(rua, TipoConducao.ALTERNATIVO);
+			linhas = dao.buscarPorRua(rua, TipoConducao.ALTERNATIVO);
 			return Response.status(Status.OK).entity(linhas).build();
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -137,9 +137,9 @@ public class SpiderBusiness {
 	}
 
 	public Response buscarTodos() {
-		List<HoraItinerarioOnibus> linhas;
+		List<Linha> linhas;
 		try {
-			linhas = linhaModel.buscarTodos();
+			linhas = dao.buscarTodos();
 			return Response.status(Status.OK).entity(linhas).build();
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -149,9 +149,9 @@ public class SpiderBusiness {
 	}
 
 	public Response buscarTodosOnibus() {
-		List<HoraItinerarioOnibus> linhas;
+		List<Linha> linhas;
 		try {
-			linhas = linhaModel.buscarTodosPorTipo(TipoConducao.ONIBUS);
+			linhas = dao.buscarTodosPorTipo(TipoConducao.ONIBUS);
 			return Response.status(Status.OK).entity(linhas).build();
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -161,9 +161,9 @@ public class SpiderBusiness {
 	}
 
 	public Response buscarTodosAlternativos() {
-		List<HoraItinerarioOnibus> linhas;
+		List<Linha> linhas;
 		try {
-			linhas = linhaModel.buscarTodosPorTipo(TipoConducao.ALTERNATIVO);
+			linhas = dao.buscarTodosPorTipo(TipoConducao.ALTERNATIVO);
 			return Response.status(Status.OK).entity(linhas).build();
 		} catch ( Exception e ) {
 			e.printStackTrace();
