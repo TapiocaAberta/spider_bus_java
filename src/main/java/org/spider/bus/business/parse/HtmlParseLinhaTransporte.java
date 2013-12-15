@@ -11,14 +11,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.spider.bus.constantes.IdElementos;
-import org.spider.bus.pojo.HoraItinerarioOnibus;
+import org.spider.bus.model.onibus.Linha;
 
 public class HtmlParseLinhaTransporte {
 
 	private Document pagina;
 	private boolean ehAlternativo = false;
-	
-	
 
 	public HtmlParseLinhaTransporte(String numeroLinha) {
 
@@ -29,12 +27,12 @@ public class HtmlParseLinhaTransporte {
 		geraDocumentPorURL(numeroLinha);
 	}
 
-	public List<HoraItinerarioOnibus> montaConteudoHorarioItinerario() throws Exception {
+	public List<Linha> montaConteudoHorarioItinerario() throws Exception {
 
 		try {
 			HashSet<String> urls = buscaURL();
 			HtmlParseHorarioItinerario horaEItinerario = new HtmlParseHorarioItinerario(urls);
-			List<HoraItinerarioOnibus> dados = horaEItinerario.montaDados();
+			List<Linha> dados = horaEItinerario.montaDados();
 
 			return dados;
 
@@ -100,7 +98,7 @@ public class HtmlParseLinhaTransporte {
 	}
 
 	protected void geraDocumentPorURL(String numeroLinha) {
-		System.out.println("Carregando página para linha: "+ numeroLinha);
+		System.out.println("Carregando página para linha: " + numeroLinha);
 		String urlBuscaPorLinha = "http://www.sjc.sp.gov.br/secretarias/transportes/horario-e-itinerario.aspx?acao=p&opcao=0&txt=" + numeroLinha;
 
 		try {

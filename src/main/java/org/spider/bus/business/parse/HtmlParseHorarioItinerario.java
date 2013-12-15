@@ -27,14 +27,20 @@ import java.util.regex.Pattern;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.spider.bus.constantes.DiasSemana;
-import org.spider.bus.pojo.HoraItinerarioOnibus;
-import org.spider.bus.pojo.Horario;
+import org.spider.bus.constantes.TipoConducao;
+import org.spider.bus.model.horario.AosSabados;
+import org.spider.bus.model.horario.DomingosEFeriados;
+import org.spider.bus.model.horario.Horarios;
+import org.spider.bus.model.horario.SegundaADomingo;
+import org.spider.bus.model.horario.SegundaASabado;
+import org.spider.bus.model.horario.SegundaASexta;
+import org.spider.bus.model.onibus.Linha;
 
 public class HtmlParseHorarioItinerario {
 
 	private Document pagina;
 	private HashSet<String> urls;
-	
+
 	public HtmlParseHorarioItinerario() {
 	}
 
@@ -42,15 +48,15 @@ public class HtmlParseHorarioItinerario {
 		this.urls = urls;
 	}
 
-	public List<HoraItinerarioOnibus> montaDados() {
-		List<HoraItinerarioOnibus> horaEItinerario = new ArrayList<HoraItinerarioOnibus>();
+	public List<Linha> montaDados() {
+		List<Linha> linhas = new ArrayList<Linha>();
 
 		for ( String url : urls ) {
 
 			try {
 				pagina = Jsoup.connect(url).get();
 
-				Horario horario = separaPorPeriodoEPegaObservacao(pagina.getElementById(ID_HORARIO).select("span").get(0).text());
+				Horarios horarios = separaPorPeriodoEPegaObservacao(pagina.getElementById(ID_HORARIO).select("span").get(0).text());
 
 				String sentido = pagina.getElementById(ID_SENTIDO).select("span").get(0).text();
 				String itinerario = pagina.getElementById(ID_ITINERARIO).select("span").get(0).text();
@@ -58,27 +64,40 @@ public class HtmlParseHorarioItinerario {
 				String nomeLinha = pagina.getElementById(ID_NOME_LINHA).select("span").get(0).text();
 				String numero = pagina.getElementById(ID_NUMERO).select("span").get(0).text();
 
-				HoraItinerarioOnibus horaEItinerarioPojo = new HoraItinerarioOnibus(numero, nomeLinha, sentido, itinerario, horario);
-				horaEItinerario.add(horaEItinerarioPojo);
+				String tipo = verificaTipoConducao(numero);
+
+				Linha linha = new Linha(tipo, numero, nomeLinha, sentido, itinerario, horarios);
+
+				linhas.add(linha);
 
 			} catch ( IOException e ) {
-				System.out.println("Erro quando carregando URL: "+url);
+				System.out.println("Erro quando carregando URL: " + url);
 				e.printStackTrace();
 			}
 		}
 
-		return horaEItinerario;
+		return linhas;
 	}
 
-	protected Horario separaPorPeriodoEPegaObservacao(String horarios) {
+	private String verificaTipoConducao(String numero) {
+		String tipo = "";
+		if ( numero.length() == 2 ) {
+			tipo = TipoConducao.ALTERNATIVO;
+		} else {
+			tipo = TipoConducao.ONIBUS;
+		}
+		return tipo;
+	}
+
+	protected Horarios separaPorPeriodoEPegaObservacao(String horarios) {
 
 		horarios = remove0as6h6as12hEtc(horarios);
 
-		List<String> horarioSegSex = new ArrayList<String>();
-		List<String> horarioSegSab = new ArrayList<String>();
-		List<String> sabados = new ArrayList<String>();
-		List<String> domingosFeriados = new ArrayList<String>();
-		List<String> segADom = new ArrayList<String>();
+		List<SegundaASexta> horarioSegSex = new ArrayList<SegundaASexta>();
+		List<SegundaASabado> horarioSegSab = new ArrayList<SegundaASabado>();
+		List<AosSabados> sabados = new ArrayList<AosSabados>();
+		List<DomingosEFeriados> domingosFeriados = new ArrayList<DomingosEFeriados>();
+		List<SegundaADomingo> segADom = new ArrayList<SegundaADomingo>();
 
 		String observacoes = "";
 
@@ -87,43 +106,43 @@ public class HtmlParseHorarioItinerario {
 		String[] horariosSeparadosPorDiaSemana = horarios.split("[|]");
 
 		if ( diasSemanaComHorarios.equals(SEGUNDA_DOMINGO) ) {
-			segADom = montaListaComHorarios(horariosSeparadosPorDiaSemana[1]);
+			segADom = new SegundaADomingo().converteParaLista(horariosSeparadosPorDiaSemana[1]);
 		}
 
 		if ( diasSemanaComHorarios.equals(TODOS) ) {
-			horarioSegSex = montaListaComHorarios(horariosSeparadosPorDiaSemana[1]);
-			sabados = montaListaComHorarios(horariosSeparadosPorDiaSemana[2]);
-			domingosFeriados = montaListaComHorarios(horariosSeparadosPorDiaSemana[3]);
+			horarioSegSex = new SegundaASexta().converteParaLista(horariosSeparadosPorDiaSemana[1]);
+			sabados = new AosSabados().converteParaLista(horariosSeparadosPorDiaSemana[2]);
+			domingosFeriados = new DomingosEFeriados().converteParaLista(horariosSeparadosPorDiaSemana[3]);
 		}
 
 		if ( diasSemanaComHorarios.equals(SEGUNDA_SEXTA_SABADO) ) {
-			horarioSegSex = montaListaComHorarios(horariosSeparadosPorDiaSemana[1]);
-			sabados = montaListaComHorarios(horariosSeparadosPorDiaSemana[2]);
+			horarioSegSex = new SegundaASexta().converteParaLista(horariosSeparadosPorDiaSemana[1]);
+			sabados = new AosSabados().converteParaLista(horariosSeparadosPorDiaSemana[2]);
 		}
 
 		if ( diasSemanaComHorarios.equals(SEGUNDA_SEXTA_DOMINGO) ) {
-			horarioSegSex = montaListaComHorarios(horariosSeparadosPorDiaSemana[1]);
-			domingosFeriados = montaListaComHorarios(horariosSeparadosPorDiaSemana[2]);
+			horarioSegSex = new SegundaASexta().converteParaLista(horariosSeparadosPorDiaSemana[1]);
+			domingosFeriados = new DomingosEFeriados().converteParaLista(horariosSeparadosPorDiaSemana[2]);
 		}
 
 		if ( diasSemanaComHorarios.equals(SEGUNDA_SABADO_DOMINGO) ) {
-			horarioSegSab = montaListaComHorarios(horariosSeparadosPorDiaSemana[1]);
-			domingosFeriados = montaListaComHorarios(horariosSeparadosPorDiaSemana[2]);
+			horarioSegSab = new SegundaASabado().converteParaLista(horariosSeparadosPorDiaSemana[1]);
+			domingosFeriados = new DomingosEFeriados().converteParaLista(horariosSeparadosPorDiaSemana[2]);
 		}
 
 		if ( diasSemanaComHorarios.equals(SEGUNDA_SEXTA) ) {
-			horarioSegSex = montaListaComHorarios(horariosSeparadosPorDiaSemana[1]);
+			horarioSegSex = new SegundaASexta().converteParaLista(horariosSeparadosPorDiaSemana[1]);
 		}
 
 		if ( diasSemanaComHorarios.equals(SABADOS) ) {
-			sabados = montaListaComHorarios(horariosSeparadosPorDiaSemana[1]);
+			sabados = new AosSabados().converteParaLista(horariosSeparadosPorDiaSemana[1]);
 		}
 		if ( diasSemanaComHorarios.equals(DOMINGOS) ) {
-			domingosFeriados = montaListaComHorarios(horariosSeparadosPorDiaSemana[1]);
+			domingosFeriados = new DomingosEFeriados().converteParaLista(horariosSeparadosPorDiaSemana[1]);
 		}
 
 		if ( diasSemanaComHorarios.equals(SEGUNDA_SABADO) ) {
-			horarioSegSab = montaListaComHorarios(horariosSeparadosPorDiaSemana[1]);
+			horarioSegSab = new SegundaASabado().converteParaLista(horariosSeparadosPorDiaSemana[1]);
 		}
 
 		boolean contenObservacoes = Pattern.compile("([(]\\d[)]( *))").matcher(horarios).find();
@@ -132,7 +151,7 @@ public class HtmlParseHorarioItinerario {
 			observacoes = montaObs(horarios);
 		}
 
-		return new Horario(horarioSegSex, horarioSegSab, segADom, sabados, domingosFeriados, observacoes);
+		return new Horarios(horarioSegSex, horarioSegSab, segADom, sabados, domingosFeriados, observacoes);
 	}
 
 	protected DiasSemana determinaDiasSemana(String horarios) {
@@ -175,17 +194,6 @@ public class HtmlParseHorarioItinerario {
 	protected String remove0as6h6as12hEtc(String horarioTratar) {
 		String horarioTratado = horarioTratar.replaceAll("(( *)0 às 6h 6 às 12h 12 às 18h 18 às 24h( *))", "|");
 		return horarioTratado;
-	}
-
-	protected List<String> montaListaComHorarios(String horario) {
-		List<String> horarios = new ArrayList<String>();
-		Matcher horariosMatcher = Pattern.compile("((\\d{2})[:](\\d{2})[(]\\d[)]|(\\d{2})[:](\\d{2}))").matcher(horario);
-
-		while ( horariosMatcher.find() ) {
-			horarios.add(horariosMatcher.group());
-		}
-
-		return horarios;
 	}
 
 	protected String montaObs(String horariosSemTratar) {

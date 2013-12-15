@@ -5,7 +5,15 @@
 
 	<persistence-unit name="spiderbus">
 		<provider>org.hibernate.ogm.jpa.HibernateOgmPersistence</provider>
-		<class>org.spider.bus.model.Linha</class>
+		<class>org.spider.bus.model.onibus.Linha</class>
+		<class>org.spider.bus.model.horario.Horarios</class>
+		
+		<class>org.spider.bus.model.horario.AosSabados</class>
+		<class>org.spider.bus.model.horario.DomingosEFeriados</class>
+		<class>org.spider.bus.model.horario.SegundaASabado</class>
+		<class>org.spider.bus.model.horario.SegundaASexta</class>
+		<class>org.spider.bus.model.horario.SegundaADomingo</class>
+		
 		<properties>
 			<property name="hibernate.search.Rules.directory_provider"
 				value="ram" />
