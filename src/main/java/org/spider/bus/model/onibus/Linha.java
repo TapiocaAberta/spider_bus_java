@@ -7,11 +7,13 @@ import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.spider.bus.model.EntidadeAbstrata;
 import org.spider.bus.model.horario.Horarios;
 
 @Entity(name = "linha")
 @XmlRootElement
+@Indexed
 public class Linha extends EntidadeAbstrata {
 	public Linha() {
 	}

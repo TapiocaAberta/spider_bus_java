@@ -29,7 +29,6 @@ public class LinhaDao {
 	public void salvar(Linha linha) {
 		try {
 			em.persist(linha);
-			log.info("Linha salva com sucesso! ");
 		} catch ( Exception e ) {
 			e.printStackTrace();
 			log.info("Erro ao salvar Linha: " + e.getCause());
@@ -37,10 +36,10 @@ public class LinhaDao {
 	}
 
 	public void salvarLista(List<Linha> linhas) {
+		
 		try {
 			for ( Linha linha : linhas ) {
 				em.persist(linha);
-				log.info("Linha salva com sucesso! ");
 			}
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -50,36 +49,34 @@ public class LinhaDao {
 
 	@SuppressWarnings("unchecked")
 	public List<Linha> buscarTodos() {
-
-		FullTextEntityManager fullTextEntityManager = org.hibernate.search.jpa.Search.getFullTextEntityManager(em);
-		QueryBuilder qb = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Linha.class).get();
-		org.apache.lucene.search.Query query = qb.keyword().onFields("ativo").matching(true).createQuery();
-		javax.persistence.Query persistenceQuery = fullTextEntityManager.createFullTextQuery(query, Linha.class);
-
-		return persistenceQuery.getResultList();
-
-	}
-
-	public List<Linha> buscarTodosPorTipo(String tipoConducao) {
-
 		List<Linha> linhas = null;
-		CriteriaBuilder builder = em.getCriteriaBuilder();
-		CriteriaQuery<Linha> criteria = builder.createQuery(Linha.class);
-		Root<Linha> from = criteria.from(Linha.class);
-		Predicate predicate = builder.and();
 		try {
-
-			if ( !tipoConducao.equals("") ) {
-				predicate = builder.and(predicate, builder.like(from.<String> get("tipo"), "%" + tipoConducao + "%"));
-			}
-
-			criteria.select(from);
-			criteria.where(predicate);
-			linhas = em.createQuery(criteria).getResultList();
+			FullTextEntityManager fullTextEntityManager = org.hibernate.search.jpa.Search.getFullTextEntityManager(em);
+			QueryBuilder qb = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Linha.class).get();
+			org.apache.lucene.search.Query query = qb.all().createQuery();
+			javax.persistence.Query persistenceQuery = fullTextEntityManager.createFullTextQuery(query, Linha.class);
+			linhas = persistenceQuery.getResultList();
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
-			log.info("Erro ao buscar todos por Tipo: " + e.getCause());
+		}
+		return linhas;
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Linha> buscarTodosPorTipo(String tipoConducao) {
+
+		List<Linha> linhas = null;
+		try {
+			FullTextEntityManager fullTextEntityManager = org.hibernate.search.jpa.Search.getFullTextEntityManager(em);
+			QueryBuilder qb = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Linha.class).get();
+			org.apache.lucene.search.Query query = qb.keyword().onField("tipo").matching(tipoConducao).createQuery();
+			javax.persistence.Query persistenceQuery = fullTextEntityManager.createFullTextQuery(query, Linha.class);
+			linhas = persistenceQuery.getResultList();
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
 		}
 		return linhas;
 	}

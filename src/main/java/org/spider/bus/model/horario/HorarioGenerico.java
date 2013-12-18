@@ -7,14 +7,18 @@ import java.util.regex.Pattern;
 
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.spider.bus.model.EntidadeAbstrata;
 
 @MappedSuperclass
 @SuppressWarnings("unchecked")
+@Indexed
 public class HorarioGenerico<T> extends EntidadeAbstrata {
 
 	private static final long serialVersionUID = 1L;
 
+	@Field
 	private String horario;
 
 	public String getHorario() {

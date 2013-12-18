@@ -8,10 +8,12 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.hibernate.search.annotations.Indexed;
 import org.spider.bus.model.EntidadeAbstrata;
 
 @Entity(name = "horarios")
 @XmlRootElement
+@Indexed
 public class Horarios extends EntidadeAbstrata {
 	private static final long serialVersionUID = 1L;
 
