@@ -1,4 +1,4 @@
-package org.spider.bus.util;
+package org.spider.bus.util.cdi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

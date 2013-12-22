@@ -7,6 +7,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
 
+import org.jboss.ejb3.annotation.TransactionTimeout;
 import org.slf4j.Logger;
 import org.spider.bus.business.parse.HtmlParseLinhaTransporte;
 import org.spider.bus.dao.LinhaDao;
@@ -14,6 +15,7 @@ import org.spider.bus.model.onibus.Linha;
 
 @Singleton
 @Startup
+@TransactionTimeout(3000)
 public class Raspar {
 
 	@Inject
@@ -53,7 +55,7 @@ public class Raspar {
 		log.info("###################### FIM SONDA ######################");
 	}
 
-	@Schedule(dayOfWeek = "Sat", hour = "17", minute = "48")
+	@Schedule(dayOfWeek = "Sun", hour = "11", minute = "44")
 	public void execute() {
 		log.info("** Executando o JOB para coleta dos dados ***");
 		try {
