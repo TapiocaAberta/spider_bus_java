@@ -1,5 +1,6 @@
 package org.spider.bus.sondas;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Schedule;
@@ -7,7 +8,6 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
 
-import org.jboss.ejb3.annotation.TransactionTimeout;
 import org.slf4j.Logger;
 import org.spider.bus.business.parse.HtmlParseLinhaTransporte;
 import org.spider.bus.dao.LinhaDao;
@@ -15,7 +15,6 @@ import org.spider.bus.model.onibus.Linha;
 
 @Singleton
 @Startup
-@TransactionTimeout(3000)
 public class Raspar {
 
 	@Inject
@@ -34,11 +33,10 @@ public class Raspar {
 		Integer linhaAlternativo;
 		Integer numeroMaximoAlternativo = 40;
 
+		List<Linha> linhas = new ArrayList<Linha>();
 		for ( linhaAlternativo = 10; linhaAlternativo <= numeroMaximoAlternativo; linhaAlternativo++ ) {
 			parseDados = new HtmlParseLinhaTransporte(linhaAlternativo.toString());
-
-			List<Linha> linhas = parseDados.montaConteudoHorarioItinerario();
-			dao.salvarLista(linhas);
+			linhas.addAll(parseDados.montaConteudoHorarioItinerario());
 		}
 
 		log.info("###################### ONIBUS ######################");
@@ -48,14 +46,15 @@ public class Raspar {
 
 		for ( linhaOnibus = 101; linhaOnibus <= numeroMaximoOnibus; linhaOnibus++ ) {
 			parseDados = new HtmlParseLinhaTransporte(linhaOnibus.toString());
-
-			List<Linha> linhas = parseDados.montaConteudoHorarioItinerario();
-			dao.salvarLista(linhas);
+			linhas.addAll(parseDados.montaConteudoHorarioItinerario());
 		}
 		log.info("###################### FIM SONDA ######################");
+
+		log.info("###################### SALVANDO LINHAS ######################");
+		dao.salvarLista(linhas);
 	}
 
-	@Schedule(dayOfWeek = "Sun", hour = "11", minute = "44")
+	@Schedule(dayOfWeek = "Sun", hour = "12", minute = "51")
 	public void execute() {
 		log.info("** Executando o JOB para coleta dos dados ***");
 		try {

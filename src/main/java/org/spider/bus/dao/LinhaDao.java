@@ -25,8 +25,9 @@ public class LinhaDao {
 		try {
 			for ( Linha linha : linhas ) {
 				em.persist(linha);
-				log.info("Salvo com sucesso! ");
+				em.flush();
 			}
+			log.info("Salvo com sucesso! ");
 		} catch ( Exception e ) {
 			e.printStackTrace();
 			log.info("Erro ao salvar Linha: " + e.getCause());

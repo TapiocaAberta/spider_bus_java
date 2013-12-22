@@ -72,7 +72,6 @@ public class HtmlParseHorarioItinerario {
 
 			} catch ( IOException e ) {
 				System.out.println("Erro quando carregando URL: " + url);
-				e.printStackTrace();
 			}
 		}
 

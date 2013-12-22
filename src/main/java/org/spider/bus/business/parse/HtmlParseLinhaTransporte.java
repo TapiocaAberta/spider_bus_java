@@ -37,7 +37,6 @@ public class HtmlParseLinhaTransporte {
 			return dados;
 
 		} catch ( Exception e ) {
-			e.printStackTrace();
 			throw new Exception("erro ao buscar linha: " + e.getMessage());
 		}
 	}
@@ -91,7 +90,7 @@ public class HtmlParseLinhaTransporte {
 			}
 
 		} catch ( Exception e ) {
-			e.printStackTrace();
+			// TODO: Mandar mensagem!
 		}
 
 		return liksHora;
@@ -104,7 +103,7 @@ public class HtmlParseLinhaTransporte {
 		try {
 			pagina = Jsoup.connect(urlBuscaPorLinha).get();
 		} catch ( IOException e ) {
-			e.printStackTrace();
+			// TODO: Mandar mensagem!
 		}
 	}
 }
