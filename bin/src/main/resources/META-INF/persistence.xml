@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+
+	<persistence-unit name="spiderbus">
+		<provider>org.hibernate.ogm.jpa.HibernateOgmPersistence</provider>
+		<class>org.spider.bus.model.onibus.Linha</class>
+		<class>org.spider.bus.model.horario.Horarios</class>
+		
+		<class>org.spider.bus.model.horario.AosSabados</class>
+		<class>org.spider.bus.model.horario.DomingosEFeriados</class>
+		<class>org.spider.bus.model.horario.SegundaASabado</class>
+		<class>org.spider.bus.model.horario.SegundaASexta</class>
+		<class>org.spider.bus.model.horario.SegundaADomingo</class>
+		
+		<properties>
+			<property name="hibernate.search.Rules.directory_provider"
+				value="ram" />
+			 <property name="hibernate.ogm.datastore.provider" value="org.hibernate.ogm.datastore.mongodb.impl.MongoDBDatastoreProvider"/>
+			<property name="hibernate.ogm.mongodb.database" value="spiderbus" />
+			<property name="hibernate.ogm.mongodb.host" value="localhost" />
+			<!-- <property name="hibernate.ogm.mongodb.host" value="127.12.159.2" /> -->
+			<property name="hibernate.ogm.mongodb.port" value="27017" />
+			<!-- <property name="hibernate.ogm.mongodb.username" value="admin"/> -->
+			<!-- <property name="hibernate.ogm.mongodb.password" value="aQG6jLYkERNZ"/> -->
+			<property name="hibernate.search.default.directory_provider" value="filesystem"/>
+	      	<property name="hibernate.search.default.indexBase" value="/tmp/.hibernate_ogm_demo_luceneindexes"/>
+		</properties>
+	</persistence-unit>
+
+</persistence>
