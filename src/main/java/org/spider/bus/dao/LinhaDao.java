@@ -21,7 +21,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 
-public class LinhaModel {
+public class LinhaDao {
 	private DBCollection collection;
 
 	@Inject
@@ -29,15 +29,15 @@ public class LinhaModel {
 
 	protected MongoClient mongo;
 
-	public LinhaModel() {
+	public LinhaDao() {
 		try {
 
-			mongo = new MongoClient(MongoDB.URL_LOCAL, MongoDB.PORTA);
-			// mongo = new MongoClient(MongoDB.URL_PROD, MongoDB.PORTA); // APENAS PARA PRODUCAO
+			// mongo = new MongoClient(MongoDB.URL_LOCAL, MongoDB.PORTA);
+			mongo = new MongoClient(MongoDB.URL_PROD, MongoDB.PORTA); // APENAS PARA PRODUCAO
 
 			DB dataBase = mongo.getDB(MongoDB.DB);
 
-			// dataBase.authenticate(MongoDB.USUARIO, MongoDB.SENHA.toCharArray()); // APENAS PARA PRODUCAO
+			dataBase.authenticate(MongoDB.USUARIO, MongoDB.SENHA.toCharArray()); // APENAS PARA PRODUCAO
 
 			this.collection = dataBase.getCollection("linha");
 

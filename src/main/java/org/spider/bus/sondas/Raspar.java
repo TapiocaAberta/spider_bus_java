@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.spider.bus.business.parse.HtmlParseLinhaTransporte;
 import org.spider.bus.constantes.TipoConducao;
-import org.spider.bus.dao.LinhaModel;
+import org.spider.bus.dao.LinhaDao;
 import org.spider.bus.pojo.HoraItinerarioOnibus;
 
 @Singleton
@@ -18,7 +18,7 @@ import org.spider.bus.pojo.HoraItinerarioOnibus;
 public class Raspar {
 
 	@Inject
-	private LinhaModel linhaModel;
+	private LinhaDao linhaModel;
 
 	private HtmlParseLinhaTransporte parseDados;
 
