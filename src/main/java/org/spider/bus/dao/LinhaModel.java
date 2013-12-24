@@ -1,4 +1,4 @@
-package org.spider.bus.model;
+package org.spider.bus.dao;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -32,12 +32,12 @@ public class LinhaModel {
 	public LinhaModel() {
 		try {
 
-			// mongo = new MongoClient(MongoDB.URL_LOCAL, MongoDB.PORTA);
-			mongo = new MongoClient(MongoDB.URL_PROD, MongoDB.PORTA); // APENAS PARA PRODUCAO
+			mongo = new MongoClient(MongoDB.URL_LOCAL, MongoDB.PORTA);
+			// mongo = new MongoClient(MongoDB.URL_PROD, MongoDB.PORTA); // APENAS PARA PRODUCAO
 
 			DB dataBase = mongo.getDB(MongoDB.DB);
 
-			dataBase.authenticate(MongoDB.USUARIO, MongoDB.SENHA.toCharArray()); // APENAS PARA PRODUCAO
+			// dataBase.authenticate(MongoDB.USUARIO, MongoDB.SENHA.toCharArray()); // APENAS PARA PRODUCAO
 
 			this.collection = dataBase.getCollection("linha");
 

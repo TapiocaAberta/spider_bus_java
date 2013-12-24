@@ -6,7 +6,7 @@
 <head>
 
 	<meta charset="utf-8">
-	<title>Simple REST API Explorer</title>
+	<title>Explorer a API SpiderBus</title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
@@ -32,17 +32,29 @@
 <body>
 
 	<div class="container">
+	<a href="https://github.com/transparenciasjc/spider_bus_java" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
 		<div class="sixteen columns">
-			<h1 class="remove-bottom" style="margin-top: 40px">Simple REST API Explorer <img src="img/spinner.gif" id="loading" alt="" title="" width="16" height="16" style="display: none;" /></h1>
-			<h5>MoviesDB Example API</h5>
+			<h3 class="remove-bottom" style="margin-top: 10px; text-align: justify; margin: 0 auto; padding: 6px;
+	margin: 6px; width: 800px;">Explore toda a API com os Horários e itinerários dos Ônibus e Alternativos de São José dos Campos/SP <img src="img/spinner.gif" id="loading" alt="" title="" width="16" height="16" style="display: none;" /></h3>
 			<hr />
 		</div>
 		<div class="four columns" id="sidebar">
 			<dl>
-				<dt style="margin-top: 0"><h4>Horario Itinerario</h4></dt>
-				<dd><a href="/buscar" data-requestmethod="get">buscar</a><small>GET /buscar</small></dd>
-				<dd><a href="/buscar/200" data-requestmethod="get">buscar por numero de linha</a><small>GET /buscar/{numero}</small></dd>
-				<dd><a href="/buscar/fatec" data-requestmethod="get">buscar por palavra chave</a><small>GET /buscar/{nome rua}</small></dd>
+				<dt style="margin-top: 0"><h4>Todos</h4></dt>
+				<dd><a href="/buscar" data-requestmethod="get">buscar todos</a><small>GET /buscar</small></dd>
+				<dd><a href="/buscar/200" data-requestmethod="get">buscar todos por numero de linha</a><small>GET /buscar/{numero}</small></dd>
+				<dd><a href="/buscar/fatec" data-requestmethod="get">buscar todos por palavra chave</a><small>GET /buscar/{nomeRua}</small></dd>
+				
+				<dt style="margin-top: 10px"><h4>Ônibus</h4></dt>
+				<dd><a href="/buscar/onibus" data-requestmethod="get">buscar ônibus</a><small>GET /buscar/onibus</small></dd>
+				<dd><a href="/buscar/onibus/300" data-requestmethod="get">buscar ônibus por numero de linha</a><small>GET /buscar/onibus/{numero}</small></dd>
+				<dd><a href="/buscar/onibus/fatec" data-requestmethod="get">buscar ônibus por palavra chave</a><small>GET /buscar/onibus/{nomeRua}</small></dd>
+				
+				<dt style="margin-top: 10px"><h4>Alternativo</h4></dt>
+				<dd><a href="/buscar/alternativo" data-requestmethod="get">buscar todos alternativos</a><small>GET /buscar/onibus</small></dd>
+				<dd><a href="/buscar/alternativo/30" data-requestmethod="get">buscar alternativos por numero de linha</a><small>GET /buscar/alternativo/{numero}</small></dd>
+				<dd><a href="/buscar/alternativo/pena" data-requestmethod="get">buscar alternativos por palavra chave</a><small>GET /buscar/alternativo/{nomeRua}</small></dd>
+				
 			</dl>
 		</div>
 		<div class="eleven columns">
@@ -50,9 +62,9 @@
 				<label class="two columns alpha">
 					<select name="requestmethod" id="requestmethod">
 						<option value="GET">GET</option>
-						<option value="POST">POST</option>
-						<option value="PUT">PUT</option>
-						<option value="DELETE">DELETE</option>
+<!-- 						<option value="POST">POST</option> -->
+<!-- 						<option value="PUT">PUT</option> -->
+<!-- 						<option value="DELETE">DELETE</option> -->
 					</select>
 				</label>
 				<label class="nine columns omega">
@@ -62,8 +74,8 @@
 			<div id="result"></div>
 		</div>
 		<div class="twelve columns offset-by-four">
-			<p>Simple REST API Explorer, built by Bramus! &mdash; <a href="http://www.bram.us/">http://www.bram.us/</a></p>
-			<p><em>The API used in this example is a simple CORS-enabled RESTful API, also built by Bramus! For demonstration purposes, the API requires an API-Key which needs to be sent via an <code>X-Api-Key</code> header.</em></p>
+			<p>Simple REST API Explorer, built by Bramus! &mdash; <a href="http://www.bram.us/" target="_blank">http://www.bram.us/</a><br>
+			Código do API Explorer no <a href="https://github.com/bramus/simple-rest-api-explorer" target="_blank">GitHub</a></p>
 		</div>
 	</div>
 

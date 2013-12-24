@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.spider.bus.business.parse.HtmlParseLinhaTransporte;
 import org.spider.bus.constantes.TipoConducao;
-import org.spider.bus.model.LinhaModel;
+import org.spider.bus.dao.LinhaModel;
 import org.spider.bus.pojo.HoraItinerarioOnibus;
 
 @Singleton
