@@ -15,7 +15,7 @@ public class PojoAbstrato implements Serializable {
 	@Id
 	@Property("id")
 	@JsonIgnore
-	protected ObjectId _id;
+	protected ObjectId id;
 
 	@JsonIgnore
 	private String dataCriacao = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
@@ -27,11 +27,11 @@ public class PojoAbstrato implements Serializable {
 	private boolean ativo = true;
 
 	public ObjectId getId() {
-		return _id;
+		return id;
 	}
 
 	public void setId(ObjectId id) {
-		this._id = id;
+		this.id = id;
 	}
 
 	public String getDataAlteracao() {
