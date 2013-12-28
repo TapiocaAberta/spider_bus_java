@@ -16,10 +16,10 @@ public class Conexao {
 	private Conexao() {
 		try {
 			Morphia morphia = new Morphia();
-			MongoClient mongo = new MongoClient(MongoDB.URL_LOCAL, MongoDB.PORTA);
+			// MongoClient mongo = new MongoClient(MongoDB.URL_LOCAL, MongoDB.PORTA);
 
-			// mongo = new MongoClient(MongoDB.URL_PROD, MongoDB.PORTA); // APENAS PARA PRODUCAO
-			// mongo.getDB(MongoDB.DB).authenticate(MongoDB.USUARIO, MongoDB.SENHA.toCharArray()); // APENAS PARA PRODUCAO
+			MongoClient mongo = new MongoClient(MongoDB.URL_PROD, MongoDB.PORTA); // APENAS PARA PRODUCAO
+			mongo.getDB(MongoDB.DB).authenticate(MongoDB.USUARIO, MongoDB.SENHA.toCharArray()); // APENAS PARA PRODUCAO
 
 			this.dataStore = morphia.createDatastore(mongo, MongoDB.DB);
 		} catch ( UnknownHostException e ) {
