@@ -17,8 +17,6 @@ public class HtmlParseLinhaTransporte {
 
 	private Document pagina;
 	private boolean ehAlternativo = false;
-	
-	
 
 	public HtmlParseLinhaTransporte(String numeroLinha) {
 
@@ -39,20 +37,8 @@ public class HtmlParseLinhaTransporte {
 			return dados;
 
 		} catch ( Exception e ) {
-			e.printStackTrace();
 			throw new Exception("erro ao buscar linha: " + e.getMessage());
 		}
-	}
-
-	public static void main(String[] args) throws Exception {
-
-		HtmlParseLinhaTransporte parseDados = null;
-
-		for ( int i = 10; i <= 40; i++ ) {
-			parseDados = new HtmlParseLinhaTransporte(i + "");
-			parseDados.buscaURL();
-		}
-
 	}
 
 	protected HashSet<String> buscaURL() throws Exception {
@@ -85,28 +71,26 @@ public class HtmlParseLinhaTransporte {
 		Elements liksHora = null;
 		try {
 			if ( ehAlternativo ) {
-				System.out.println("Carregando Alternativo");
 				liksHora = pagina.getElementById(IdElementos.ID_DIV_ALTERNATIVO).select("a[href]");
 			} else {
-				System.out.println("Carregando Ônibus");
 				liksHora = pagina.getElementById(IdElementos.ID_DIV_ONIBUS).select("a[href]");
 			}
 
 		} catch ( Exception e ) {
-			e.printStackTrace();
+			System.out.println("Linha não existe");
 		}
 
 		return liksHora;
 	}
 
 	protected void geraDocumentPorURL(String numeroLinha) {
-		System.out.println("Carregando página para linha: "+ numeroLinha);
+		System.out.println("Carregando página para linha: " + numeroLinha);
 		String urlBuscaPorLinha = "http://www.sjc.sp.gov.br/secretarias/transportes/horario-e-itinerario.aspx?acao=p&opcao=0&txt=" + numeroLinha;
 
 		try {
 			pagina = Jsoup.connect(urlBuscaPorLinha).get();
 		} catch ( IOException e ) {
-			e.printStackTrace();
+			System.out.println("Linha: " + numeroLinha + " não existe");
 		}
 	}
 }

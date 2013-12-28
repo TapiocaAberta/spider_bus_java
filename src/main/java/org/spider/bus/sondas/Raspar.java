@@ -1,5 +1,6 @@
 package org.spider.bus.sondas;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Schedule;
@@ -9,8 +10,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.spider.bus.business.parse.HtmlParseLinhaTransporte;
-import org.spider.bus.constantes.TipoConducao;
-import org.spider.bus.dao.LinhaDao;
+import org.spider.bus.dao.linha.LinhaDao;
 import org.spider.bus.pojo.HoraItinerarioOnibus;
 
 @Singleton
@@ -30,6 +30,7 @@ public class Raspar {
 		log.info("###################### ATIVANDO SONDA ######################");
 
 		linhaModel.removerTodos(); // Limpar Collection para entrada de novos dados
+		List<HoraItinerarioOnibus> linhas = new ArrayList<HoraItinerarioOnibus>();
 
 		log.info("###################### ALTERNATIVO ######################");
 
@@ -38,9 +39,7 @@ public class Raspar {
 
 		for ( linhaAlternativo = 10; linhaAlternativo <= numeroMaximoAlternativo; linhaAlternativo++ ) {
 			parseDados = new HtmlParseLinhaTransporte(linhaAlternativo.toString());
-
-			List<HoraItinerarioOnibus> linhas = parseDados.montaConteudoHorarioItinerario();
-			linhaModel.salvarLinha(linhas, TipoConducao.ALTERNATIVO);
+			linhas.addAll(parseDados.montaConteudoHorarioItinerario());
 		}
 
 		log.info("###################### ONIBUS ######################");
@@ -50,15 +49,14 @@ public class Raspar {
 
 		for ( linhaOnibus = 101; linhaOnibus <= numeroMaximoOnibus; linhaOnibus++ ) {
 			parseDados = new HtmlParseLinhaTransporte(linhaOnibus.toString());
-
-			List<HoraItinerarioOnibus> linhas = parseDados.montaConteudoHorarioItinerario();
-			linhaModel.salvarLinha(linhas, TipoConducao.ONIBUS);
+			linhas.addAll(parseDados.montaConteudoHorarioItinerario());
 		}
-		linhaModel.fecharConexao();
+
+		linhaModel.salvarLinha(linhas);
 		log.info("###################### FIM SONDA ######################");
 	}
 
-	@Schedule(dayOfWeek = "Sun", hour = "1")
+	@Schedule(dayOfWeek = "Sat", hour = "15", minute = "13")
 	public void execute() {
 		log.info("** Executando o JOB para coleta dos dados ***");
 		try {

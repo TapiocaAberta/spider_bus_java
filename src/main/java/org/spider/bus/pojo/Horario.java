@@ -1,20 +1,33 @@
 package org.spider.bus.pojo;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.mongodb.morphia.annotations.Embedded;
+import org.mongodb.morphia.annotations.Entity;
+
+@Entity(value = "horarios", noClassnameStored = true)
 @XmlRootElement
-public class Horario implements Serializable {
+public class Horario extends PojoAbstrato {
 
 	private static final long serialVersionUID = 1L;
 
+	@Embedded("segunda_sexta")
 	private List<String> deSegundaSexta;
+
+	@Embedded("segunda_sabado")
 	private List<String> deSegundaSab;
+
+	@Embedded("segunda_domingo")
 	private List<String> deSegundaDom;
+
+	@Embedded("sabados")
 	private List<String> aosSabados;
+
+	@Embedded("domingos_feriados")
 	private List<String> domingosEFeriado;
+
 	private String observacao;
 
 	public Horario() {

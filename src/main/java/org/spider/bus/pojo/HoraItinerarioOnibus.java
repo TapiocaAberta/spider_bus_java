@@ -1,37 +1,28 @@
 package org.spider.bus.pojo;
 
-import java.io.Serializable;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.bson.types.ObjectId;
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.joda.time.DateTime;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Reference;
 
+@Entity(value = "conducao", noClassnameStored = true)
 @XmlRootElement
-public class HoraItinerarioOnibus implements Serializable {
+public class HoraItinerarioOnibus extends PojoAbstrato {
 
 	private static final long serialVersionUID = 1L;
 
 	public HoraItinerarioOnibus() {
 	}
 
-	public HoraItinerarioOnibus(String numero, String nome, String sentido, String itinerario, Horario horarios) {
+	public HoraItinerarioOnibus(String numero, String nome, String sentido, String itinerario, Horario horarios, String tipo) {
 		this.numero = numero;
 		this.nome = nome;
 		this.sentido = sentido;
 		this.itinerario = itinerario;
 		this.horarios = horarios;
+		this.tipo = tipo;
 	}
-
-	@JsonIgnore
-	private ObjectId _id;
-
-	@JsonIgnore
-	private DateTime data_criacao;
-
-	@JsonIgnore
-	private boolean ativo;
 
 	@JsonIgnore
 	private String tipo;
@@ -40,6 +31,8 @@ public class HoraItinerarioOnibus implements Serializable {
 	private String nome;
 	private String sentido;
 	private String itinerario;
+
+	@Reference("horarios")
 	private Horario horarios;
 
 	public String getNumero() {
@@ -60,30 +53,6 @@ public class HoraItinerarioOnibus implements Serializable {
 
 	public Horario getHorarios() {
 		return horarios;
-	}
-
-	public ObjectId get_id() {
-		return _id;
-	}
-
-	public void set_id(ObjectId _id) {
-		this._id = _id;
-	}
-
-	public DateTime getData_criacao() {
-		return data_criacao;
-	}
-
-	public void setData_criacao(DateTime data_criacao) {
-		this.data_criacao = data_criacao;
-	}
-
-	public boolean isAtivo() {
-		return ativo;
-	}
-
-	public void setAtivo(boolean ativo) {
-		this.ativo = ativo;
 	}
 
 	public void setNumero(String numero) {

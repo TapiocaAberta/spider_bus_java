@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.spider.bus.constantes.DiasSemana;
+import org.spider.bus.constantes.TipoConducao;
 import org.spider.bus.pojo.HoraItinerarioOnibus;
 import org.spider.bus.pojo.Horario;
 
@@ -34,7 +35,7 @@ public class HtmlParseHorarioItinerario {
 
 	private Document pagina;
 	private HashSet<String> urls;
-	
+
 	public HtmlParseHorarioItinerario() {
 	}
 
@@ -58,16 +59,26 @@ public class HtmlParseHorarioItinerario {
 				String nomeLinha = pagina.getElementById(ID_NOME_LINHA).select("span").get(0).text();
 				String numero = pagina.getElementById(ID_NUMERO).select("span").get(0).text();
 
-				HoraItinerarioOnibus horaEItinerarioPojo = new HoraItinerarioOnibus(numero, nomeLinha, sentido, itinerario, horario);
+				String tipoConducao = verificaTipoConducao(numero);
+
+				HoraItinerarioOnibus horaEItinerarioPojo = new HoraItinerarioOnibus(numero, nomeLinha, sentido, itinerario, horario, tipoConducao);
 				horaEItinerario.add(horaEItinerarioPojo);
 
 			} catch ( IOException e ) {
-				System.out.println("Erro quando carregando URL: "+url);
-				e.printStackTrace();
+				System.out.println("Erro quando carregando URL: " + url);
 			}
 		}
 
 		return horaEItinerario;
+	}
+
+	private String verificaTipoConducao(String numero) {
+		String tipo = TipoConducao.ONIBUS;
+
+		if ( numero.length() == 2 ) {
+			tipo = TipoConducao.ALTERNATIVO;
+		}
+		return tipo;
 	}
 
 	protected Horario separaPorPeriodoEPegaObservacao(String horarios) {

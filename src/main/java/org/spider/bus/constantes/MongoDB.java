@@ -7,5 +7,4 @@ public class MongoDB {
 	public static final String DB = "spiderbus";
 	public static final String USUARIO = "admin";
 	public static final String SENHA = "aQG6jLYkERNZ";
-
 }
