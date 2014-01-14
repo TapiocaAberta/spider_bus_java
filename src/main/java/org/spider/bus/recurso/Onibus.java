@@ -9,26 +9,24 @@ import javax.ws.rs.core.Response;
 
 import org.spider.bus.business.recurso.SpiderBusiness;
 
-@Path("todos")
-public class SpiderRecurso {
-
+@Path("onibus")
+public class Onibus {
 	@Inject
 	private SpiderBusiness spiderBusiness;
 
 	@GET
 	@Path("/")
 	@Produces("application/json; charset=UTF-8")
-	// TODOS independente do tipo
-	public Response buscarTodos() {
-		return spiderBusiness.buscarTodos();
+	// TODOS do tipo onibus
+	public Response buscarTodosOnibus() {
+		return spiderBusiness.buscarTodosOnibus();
 	}
 
 	@GET
 	@Path("/{valor}")
 	@Produces("application/json; charset=UTF-8")
-	// por rua ou por numero independente do tipo
-	public Response buscarPorNumero(@PathParam("valor") String valor) {
-		return spiderBusiness.buscar(valor);
+	// por rua ou por numero por onuibus
+	public Response buscarOnibusPorNumero(@PathParam("valor") String valor) {
+		return spiderBusiness.buscarOnibus(valor);
 	}
-
 }
