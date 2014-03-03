@@ -5,7 +5,7 @@ Bus Spider SJCampos [![Stories in Ready](https://badge.waffle.io/waffleio/waffle
 
 The goal of the project is to provide an REST api of schedules and itineraries of buses from São José dos Campos.
 
-The online version of the service is hosted in [OpenShift](https://www.openshift.com/), and can accessed by the following link: ['http://spiderbus-pedrohos.rhcloud.com/api/buscar/{numero}'](http://spiderbus-pedrohos.rhcloud.com/api/buscar/200), where {number} is the line number that you search.
+The online version of the service is hosted in [OpenShift](https://www.openshift.com/), and can accessed by the following link: ['http://spiderbus-pedrohos.rhcloud.com/api/onibus/{numero}'](http://spiderbus-pedrohos.rhcloud.com/api/onibus/200), where {number} is the line number that you search.
 
 # Platforms and Frameworks
 
